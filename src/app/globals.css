@@ -3,31 +3,49 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --canvas-0: #fffdf7;
+  --canvas-1: #eef7ff;
+  --canvas-2: #f6f4ff;
+  --ink: #18181b;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--ink);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(247, 160, 108, 0.18), transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(104, 197, 255, 0.2), transparent 42%),
+    radial-gradient(circle at 30% 85%, rgba(122, 92, 255, 0.15), transparent 38%),
+    linear-gradient(140deg, var(--canvas-0), var(--canvas-1), var(--canvas-2));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  .font-heading {
+    font-family: var(--font-heading), sans-serif;
+  }
+
+  .font-body {
+    font-family: var(--font-body), sans-serif;
+  }
+}
+
+@layer components {
+  .bg-canvas {
+    background-image:
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.65)),
+      repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.09),
+        rgba(255, 255, 255, 0.09) 1px,
+        transparent 1px,
+        transparent 46px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.09),
+        rgba(255, 255, 255, 0.09) 1px,
+        transparent 1px,
+        transparent 46px
+      );
   }
 }
