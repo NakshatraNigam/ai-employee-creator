@@ -228,7 +228,7 @@ async function embedWithGemini(text: string): Promise<number[]> {
     throw new Error("GEMINI_API_KEY is not set.");
   }
 
-  const model = getEnv("GEMINI_EMBED_MODEL") ?? "gemini-embedding-001";
+  const model = getEnv("GEMINI_EMBED_MODEL") ?? "text-embedding-004";
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:embedContent`,
     {
