@@ -54,7 +54,7 @@ function resolveChatModel(requestedModel: string, provider: "openai" | "gemini")
     if (configured) {
       return configured;
     }
-    return requestedModel.startsWith("gemini") ? requestedModel : "gemini-2.5-flash";
+    return requestedModel.startsWith("gemini") ? requestedModel : "gemini-1.5-flash";
   }
 
   if (requestedModel === "gpt-4o") {

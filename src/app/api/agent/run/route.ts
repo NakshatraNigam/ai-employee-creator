@@ -157,23 +157,36 @@ export async function POST(request: Request) {
 
     runId = runRow.id as string;
 
-    const queryEmbedding = await createEmbedding(input);
+    let queryEmbedding: number[] = [];
+    try {
+      queryEmbedding = await createEmbedding(input);
+    } catch (err) {
+      console.error("Embedding creation failed:", err);
+      throw new Error(`Knowledge lookup failed (embedding error): ${err instanceof Error ? err.message : 'Unknown'}`);
+    }
 
     let knowledgeMatches: Array<{ content: string; similarity: number }> = [];
     if (queryEmbedding.length > 0) {
-      const { data: chunkMatches, error: matchError } = await supabase.rpc("match_knowledge_chunks", {
-        query_embedding: embeddingToVectorString(queryEmbedding),
-        match_count: 6,
-        filter_agent_config_id: configId,
-      });
+      try {
+        const { data: chunkMatches, error: matchError } = await supabase.rpc("match_knowledge_chunks", {
+          query_embedding: embeddingToVectorString(queryEmbedding),
+          match_count: 6,
+          filter_agent_config_id: configId,
+        });
 
-      if (!matchError && Array.isArray(chunkMatches)) {
-        knowledgeMatches = chunkMatches
-          .map((row) => ({
-            content: typeof row.content === "string" ? row.content : "",
-            similarity: typeof row.similarity === "number" ? row.similarity : 0,
-          }))
-          .filter((row) => row.content.length > 0);
+        if (matchError) throw matchError;
+
+        if (Array.isArray(chunkMatches)) {
+          knowledgeMatches = chunkMatches
+            .map((row) => ({
+              content: typeof row.content === "string" ? row.content : "",
+              similarity: typeof row.similarity === "number" ? row.similarity : 0,
+            }))
+            .filter((row) => row.content.length > 0);
+        }
+      } catch (err) {
+        console.error("Knowledge retrieval failed:", err);
+        throw new Error(`Knowledge lookup failed (DB error): ${err instanceof Error ? err.message : 'Unknown'}`);
       }
     }
 
