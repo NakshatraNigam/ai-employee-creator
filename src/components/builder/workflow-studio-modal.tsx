@@ -12,6 +12,7 @@ interface WorkflowStudioModalProps {
   running: boolean;
   selectedConfigId: string | null;
   lastRun: WorkflowRunResult | null;
+  statusMessage: string | null;
   onClose: () => void;
   onRun: (payload: { input: string; triggerType: TriggerType; sessionId: string }) => Promise<void>;
 }
@@ -22,6 +23,7 @@ export function WorkflowStudioModal({
   running,
   selectedConfigId,
   lastRun,
+  statusMessage,
   onClose,
   onRun,
 }: WorkflowStudioModalProps) {
@@ -102,6 +104,12 @@ export function WorkflowStudioModal({
                 >
                   {running ? "Running workflow..." : "Execute Workflow"}
                 </button>
+
+                {statusMessage && (
+                  <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-relaxed text-red-600">
+                    {statusMessage}
+                  </div>
+                )}
               </div>
             </div>
 

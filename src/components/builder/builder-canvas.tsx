@@ -1089,10 +1089,11 @@ function BuilderCanvasInner() {
 
       <WorkflowStudioModal
         open={workflowStudioOpen}
-        canRun={Boolean(user) && !runningWorkflow}
+        canRun={isSupabaseConfigured}
         running={runningWorkflow}
         selectedConfigId={selectedConfigId}
         lastRun={lastRun}
+        statusMessage={statusMessage}
         onClose={() => setWorkflowStudioOpen(false)}
         onRun={onRunWorkflow}
       />
